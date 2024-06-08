@@ -7,11 +7,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.dto.StatsDtoRequest;
 import ru.practicum.dto.StatsDtoResponse;
+import ru.practicum.utils.Utils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +21,6 @@ import java.util.List;
 @Slf4j
 public class StatsClient {
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final String statsServerUrl;
     private final RestTemplate restTemplate;
 
@@ -55,8 +54,8 @@ public class StatsClient {
                 unique);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(statsServerUrl + "/stats");
-        builder.queryParam("start", DTF.format(start));
-        builder.queryParam("end", DTF.format(end));
+        builder.queryParam("start", Utils.dateTimeFormatter.format(start));
+        builder.queryParam("end", Utils.dateTimeFormatter.format(end));
         if (uris != null) builder.queryParam("uris", String.join(",", uris));
         if (unique != null) builder.queryParam("unique", unique);
         URI uri = builder.build(false).toUri();

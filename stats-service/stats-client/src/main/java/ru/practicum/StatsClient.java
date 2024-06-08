@@ -21,10 +21,9 @@ import java.util.List;
 @Slf4j
 public class StatsClient {
 
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final String statsServerUrl;
     private final RestTemplate restTemplate;
-
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public StatsClient(@Value("${stats.server.url}") String statsServerUrl) {
         this.statsServerUrl = statsServerUrl;

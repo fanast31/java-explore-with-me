@@ -54,8 +54,8 @@ public class StatsClient {
                 unique);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(statsServerUrl + "/stats");
-        builder.queryParam("start", Utils.dateTimeFormatter.format(start));
-        builder.queryParam("end", Utils.dateTimeFormatter.format(end));
+        builder.queryParam("start", Utils.DATE_TIME_FORMATTER.format(start));
+        builder.queryParam("end", Utils.DATE_TIME_FORMATTER.format(end));
         if (uris != null) builder.queryParam("uris", String.join(",", uris));
         if (unique != null) builder.queryParam("unique", unique);
         URI uri = builder.build(false).toUri();

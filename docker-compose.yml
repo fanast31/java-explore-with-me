@@ -11,6 +11,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats-db
       - SPRING_DATASOURCE_USERNAME=test
       - SPRING_DATASOURCE_PASSWORD=test
+      - TZ=Europe/Moscow
 
   stats-db:
     image: postgres:14-alpine

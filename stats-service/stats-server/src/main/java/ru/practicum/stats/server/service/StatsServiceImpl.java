@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.StatsDtoRequest;
 import ru.practicum.dto.StatsDtoResponse;
+import ru.practicum.stats.server.exceptions.BadRequestException;
 import ru.practicum.stats.server.mapper.StatsMapper;
 import ru.practicum.stats.server.model.EndpointStats;
 import ru.practicum.stats.server.repository.StatsRepository;
@@ -31,6 +32,12 @@ public class StatsServiceImpl implements StatsService {
     public List<StatsDtoResponse> getStatistic(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean isUnique) {
 
         List<EndpointStats> endpointStats;
+
+        if (start == null || end == null)
+            throw new BadRequestException("Start date and end date are required for the request");
+
+        if (start.isAfter(end))
+            throw new BadRequestException("Range end is before Range start");
 
         if (uris == null || uris.isEmpty()) {
             endpointStats = statsRepository.findAllStatsBetweenDates(start, end);

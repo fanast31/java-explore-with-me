@@ -7,7 +7,6 @@ import ru.practicum.main.service.dto.event.NewEventDto;
 import ru.practicum.main.service.model.event.Event;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @UtilityClass

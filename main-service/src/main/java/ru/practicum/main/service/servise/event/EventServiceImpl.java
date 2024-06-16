@@ -119,7 +119,7 @@ public class EventServiceImpl implements EventService {
             Location location = LocationMapper.toLocation(updateEventRequest.getLocation());
             Location newEventLocation = locationRepository.findByLatAndLon(
                     location.getLat(),
-                    location.getLon()).orElse(location);
+                    location.getLon()).orElse(locationRepository.save(location));
             event.setLocation(newEventLocation);
         }
 
@@ -214,7 +214,7 @@ public class EventServiceImpl implements EventService {
             Location location = LocationMapper.toLocation(updateDto.getLocation());
             Location newEventLocation = locationRepository.findByLatAndLon(
                     location.getLat(),
-                    location.getLon()).orElse(location);
+                    location.getLon()).orElse(locationRepository.save(location));
             event.setLocation(newEventLocation);
         }
 

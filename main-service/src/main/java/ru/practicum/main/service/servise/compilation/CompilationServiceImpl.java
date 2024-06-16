@@ -15,6 +15,7 @@ import ru.practicum.main.service.repository.CompilationRepository;
 import ru.practicum.main.service.repository.EventsRepository;
 import ru.practicum.main.service.utils.PaginationUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,7 +93,7 @@ public class CompilationServiceImpl implements CompilationService {
     }
     private List<Event> getEvents(List<Long> ids) {
         if (ids == null) {
-            return List.of();
+            return new ArrayList<>();
         }
         List<Event> events = eventsRepository.findAllById(ids);
         if (events.size() != ids.size()) {

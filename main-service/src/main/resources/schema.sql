@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS events (
     request_moderation BOOLEAN,
     state VARCHAR(255) NOT NULL,
     title VARCHAR(120) NOT NULL,
+    views BIGINT,
 
     category_id BIGINT NOT NULL REFERENCES categories(id),
     initiator_id BIGINT NOT NULL REFERENCES users(id),

@@ -6,7 +6,6 @@ import ru.practicum.main.service.model.Category;
 import ru.practicum.main.service.model.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity

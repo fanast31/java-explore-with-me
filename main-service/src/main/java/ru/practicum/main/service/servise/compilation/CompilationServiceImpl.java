@@ -94,6 +94,7 @@ public class CompilationServiceImpl implements CompilationService {
         return compilationRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Compilation not found"));
     }
+
     private List<Event> getEvents(List<Long> ids) {
         if (ids == null) {
             return new ArrayList<>();

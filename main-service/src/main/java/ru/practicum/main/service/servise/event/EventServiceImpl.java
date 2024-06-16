@@ -331,6 +331,7 @@ public class EventServiceImpl implements EventService {
 
         return 0L;
     }
+
     private Map<Long, Long> getEventsViews(List<Event> events) {
         List<String> eventsUri = events.stream()
                 .map(e -> "/events/" + e.getId())
@@ -349,6 +350,7 @@ public class EventServiceImpl implements EventService {
             return Collections.emptyMap();
         }
     }
+
     private void updateEventFields(Event savedEvent, UpdateEventRequest newEvent) {
 
         Map<String, BiConsumer<Event, UpdateEventRequest>> fieldsUpdaters = new HashMap<>();
@@ -388,14 +390,17 @@ public class EventServiceImpl implements EventService {
             }
         });
     }
+
     private User findUserById(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User isn't found"));
     }
+
     private Category findCategoryById(long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new DataNotFoundException("Category isn't found"));
     }
+
     private Event findEventById(long eventId) {
         return eventsRepository.findById(eventId)
                 .orElseThrow(() -> new DataNotFoundException("Event isn't found"));

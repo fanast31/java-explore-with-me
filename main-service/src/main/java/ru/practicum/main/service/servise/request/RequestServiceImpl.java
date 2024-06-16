@@ -146,6 +146,7 @@ public class RequestServiceImpl implements RequestService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User isn't found"));
     }
+
     private Event findEventById(long eventId) {
         return eventsRepository.findById(eventId)
                 .orElseThrow(() -> new DataNotFoundException("Event isn't found"));

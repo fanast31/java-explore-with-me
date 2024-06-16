@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.main.service.dto.compilation.CompilationDto;
 import ru.practicum.main.service.dto.compilation.CompilationDtoRequest;
+import ru.practicum.main.service.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.main.service.servise.compilation.CompilationService;
 
 import javax.validation.Valid;
@@ -30,11 +31,11 @@ public class ControllerAdminCompilation {
     @PatchMapping("/{compId}")
     public ResponseEntity<CompilationDto> updateCompilation(
             @PathVariable Long compId,
-            @Valid @RequestBody CompilationDtoRequest compilationDtoRequest) {
-        log.info("ControllerAdminCompilation.updateCompilation compId: {}, compilationDtoRequest: {}",
-                compId, compilationDtoRequest);
+            @Valid @RequestBody UpdateCompilationRequest updateCompilationRequest) {
+        log.info("ControllerAdminCompilation.updateCompilation compId: {}, updateCompilationRequest: {}",
+                compId, updateCompilationRequest);
         return ResponseEntity.status(HttpStatus.OK).body(
-                compilationService.updateCompilation(compId, compilationDtoRequest));
+                compilationService.updateCompilation(compId, updateCompilationRequest));
     }
 
     @DeleteMapping("/{compId}")

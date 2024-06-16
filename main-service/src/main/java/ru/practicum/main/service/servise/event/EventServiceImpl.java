@@ -295,7 +295,7 @@ public class EventServiceImpl implements EventService {
             }
         }
         List<Event> events = eventsRepository.findAll(spec, pageable);
-        if (events.isEmpty()) return List.of();
+        if (events.isEmpty()) return new ArrayList<>();
 
         return EventMapper.toListShortDto(events, getEventsViews(events));
     }
@@ -322,7 +322,7 @@ public class EventServiceImpl implements EventService {
             List<StatsDtoResponse> eventRequests = statsClient.getStatistics(
                     LocalDateTime.now().minusYears(100),
                     LocalDateTime.now().plusYears(100),
-                    List.of("/events/" + event.getId()),
+                    Arrays.asList("/events/" + event.getId()),
                     true);
 
             if (!eventRequests.isEmpty())

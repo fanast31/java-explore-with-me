@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.service.dto.user.UserDtoRequest;
 import ru.practicum.main.service.dto.user.UserDtoResponse;
+import ru.practicum.main.service.exceptions.ConflictDataException;
 import ru.practicum.main.service.exceptions.DataNotFoundException;
 import ru.practicum.main.service.mapper.UserMapper;
 import ru.practicum.main.service.model.User;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDtoResponse create(UserDtoRequest userDtoRequest) {
+        if (userRepository.existsByEmail(userDtoRequest.getEmail())) {
+            throw new ConflictDataException("User with this email exist already");
+        }
         return UserMapper.toUserDtoResponse(
                 userRepository.save(UserMapper.toUser(userDtoRequest)));
     }

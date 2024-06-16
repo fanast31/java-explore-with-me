@@ -43,7 +43,7 @@ public class ControllerAdminEvent {
                 .from(from)
                 .size(size)
                 .build();
-        log.info("EventAdminController.getEvents {}", params);
+        log.info("ControllerAdminEvent.getEvents {}", params);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventsByAdmin(params));
     }
 
@@ -51,7 +51,7 @@ public class ControllerAdminEvent {
     public ResponseEntity<EventFullDto> updateEventAdmin(
             @PathVariable Long eventId,
             @RequestBody @Valid UpdateEventRequest updateEventRequest) {
-        log.info("EventAdminController.Patch: {}", eventId);
+        log.info("ControllerAdminEvent.Patch: eventId {}, UpdateEventRequest {}", eventId, updateEventRequest);
         return ResponseEntity.status(HttpStatus.OK).body(eventService.updateEventAdmin(eventId, updateEventRequest));
     }
 

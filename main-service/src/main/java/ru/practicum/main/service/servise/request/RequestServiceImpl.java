@@ -20,6 +20,7 @@ import ru.practicum.main.service.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,7 +125,7 @@ public class RequestServiceImpl implements RequestService {
     public RequestDto cancelRequest(long userId, long requestId) {
         findUserById(userId);
         Request request = requestRepository.findByIdAndStatusIn(
-                        requestId, List.of(RequestStatus.PENDING, RequestStatus.CONFIRMED))
+                        requestId, Arrays.asList(RequestStatus.PENDING, RequestStatus.CONFIRMED))
                 .orElseThrow(() -> new DataNotFoundException("Request not found"));
         request.setStatus(RequestStatus.CANCELED);
         return RequestMapper.toRequestDto(requestRepository.save(request));

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.main.service.dto.compilation.CompilationDto;
 import ru.practicum.main.service.dto.compilation.CompilationDtoRequest;
+import ru.practicum.main.service.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.main.service.exceptions.BadRequestException;
 import ru.practicum.main.service.exceptions.DataNotFoundException;
 import ru.practicum.main.service.mapper.CompilationMapper;
@@ -40,17 +41,19 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public CompilationDto updateCompilation(Long compId, CompilationDtoRequest compilationDtoRequest) {
+    public CompilationDto updateCompilation(Long compId, UpdateCompilationRequest updateCompilationRequest) {
 
         Compilation compilation = findCompilationById(compId);
 
-        List<Event> events = getEvents(compilationDtoRequest.getEvents());
-        compilation.setEvents(events);
-
-        if (compilationDtoRequest.getTitle() != null) {
-            compilation.setTitle(compilationDtoRequest.getTitle());
+        if (updateCompilationRequest.getEvents() != null) {
+            List<Event> events = getEvents(updateCompilationRequest.getEvents());
+            compilation.setEvents(events);
         }
-        compilation.setPinned(compilationDtoRequest.isPinned());
+
+        if (updateCompilationRequest.getTitle() != null) {
+            compilation.setTitle(updateCompilationRequest.getTitle());
+        }
+        compilation.setPinned(updateCompilationRequest.isPinned());
 
         return CompilationMapper.toCompilationDto(compilationRepository.save(compilation));
 

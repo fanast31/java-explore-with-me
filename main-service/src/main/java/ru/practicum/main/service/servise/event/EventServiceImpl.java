@@ -283,21 +283,35 @@ public class EventServiceImpl implements EventService {
         };
 
         int from = params.getFrom(), size = params.getSize();
-        Pageable pageable = PageRequest.of(from / size, size);
+        Pageable pageable;
+        List<EventShortDto> eventsDto = null;
+
         if (params.getSort() != null) {
             switch (params.getSort()) {
                 case "EVENT_DATE":
                     pageable = PageRequest.of(from / size, size, Sort.Direction.ASC, "eventDate");
+                    eventsDto = EventMapper.toListShortDto(eventsRepository.findAll(spec, pageable));
                     break;
                 case "VIEWS":
-                    pageable = PageRequest.of(from / size, size, Sort.Direction.DESC, "views");
+                    pageable = PageRequest.of(from / size, size);
+                    List<Event> events = eventsRepository.findAll(spec, pageable);
+                    Map<Long, Long> views = getEventsViews(events);
+
+                    eventsDto = events.stream()
+                            .peek(event -> event.setViews(views.get(event.getId())))
+                            .sorted((e1, e2) -> Long.compare(e2.getViews(), e1.getViews()))
+                            .map(EventMapper::toEventShortDto)
+                            .collect(Collectors.toList());
+
                     break;
+                default:
+                    pageable = PageRequest.of(from / size, size);
+                    eventsDto = EventMapper.toListShortDto(eventsRepository.findAll(spec, pageable));
             }
         }
-        List<Event> events = eventsRepository.findAll(spec, pageable);
-        if (events.isEmpty()) return new ArrayList<>();
+        if (eventsDto == null || eventsDto.isEmpty()) return new ArrayList<>();
 
-        return EventMapper.toListShortDto(events, getEventsViews(events));
+        return eventsDto;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 20, max = 2000)
+    @Column(length = 2000)
     private String annotation;
 
     @Column(name = "confirmed_request")
@@ -33,7 +33,7 @@ public class Event {
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 
-    @Size(min = 20, max = 7000)
+    @Column(length = 7000)
     private String description;
 
     @Column(name = "event_date")
@@ -51,7 +51,7 @@ public class Event {
     @Column(name = "request_moderation")
     private Boolean requestModeration = false;
 
-    @Size(min = 3, max = 120)
+    @Column(length = 120)
     private String title;
 
     private long views = 0;

@@ -333,13 +333,19 @@ public class EventServiceImpl implements EventService {
     }
 
     private Map<Long, Long> getEventsViews(List<Event> events) {
+
         List<String> eventsUri = events.stream()
                 .map(e -> "/events/" + e.getId())
                 .collect(Collectors.toList());
 
+        LocalDateTime minDate = events.stream()
+                .map(Event::getPublishedOn)
+                .min(Comparator.naturalOrder())
+                .orElse(LocalDateTime.now());
+
         List<StatsDtoResponse> eventsRequests = statsClient.getStatistics(
-                LocalDateTime.now().minusYears(100),
-                LocalDateTime.now().plusYears(100),
+                minDate,
+                LocalDateTime.now(),
                 eventsUri,
                 true);
 

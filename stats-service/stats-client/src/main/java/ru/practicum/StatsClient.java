@@ -2,7 +2,10 @@ package ru.practicum;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.dto.StatsDtoRequest;
@@ -53,6 +56,9 @@ public class StatsClient {
                 uris == null ? "null" : String.join(", ", uris),
                 unique);
 
+        if (start == null || end == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Start and End parameters are required.");
+        }
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(statsServerUrl + "/stats");
         builder.queryParam("start", Utils.DATE_TIME_FORMATTER.format(start));
         builder.queryParam("end", Utils.DATE_TIME_FORMATTER.format(end));
@@ -60,11 +66,18 @@ public class StatsClient {
         if (unique != null) builder.queryParam("unique", unique);
         URI uri = builder.build(false).toUri();
 
-        StatsDtoResponse[] stats = restTemplate.getForObject(uri, StatsDtoResponse[].class);
+        try {
+            StatsDtoResponse[] stats = restTemplate.getForObject(uri, StatsDtoResponse[].class);
 
-        if (stats != null) {
-            return new ArrayList<>(Arrays.asList(stats));
-        } else {
+            if (stats != null) {
+                return new ArrayList<>(Arrays.asList(stats));
+            } else {
+                return Collections.emptyList();
+            }
+        } catch (HttpClientErrorException.BadRequest ex) {
+            throw ex;
+        } catch (RestClientException ex) {
+            log.error("Error while fetching statistics: {}", ex.getMessage());
             return Collections.emptyList();
         }
     }

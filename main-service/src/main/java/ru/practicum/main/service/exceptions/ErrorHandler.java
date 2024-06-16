@@ -19,7 +19,8 @@ public class ErrorHandler {
         return new ErrorResponse("DataNotFoundException", e.getMessage());
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class,
+    @ExceptionHandler({
+            MethodArgumentNotValidException.class,
             BadRequestException.class,
             IllegalArgumentException.class,
             MissingServletRequestParameterException.class})
@@ -27,6 +28,14 @@ public class ErrorHandler {
     public ErrorResponse badRequestException(final Exception e) {
         log.debug("400 BAD_REQUEST {}", e.getMessage());
         return new ErrorResponse("BAD_REQUEST", e.getMessage());
+    }
+
+    @ExceptionHandler({
+            ConflictDataException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleConflictDataException(final Exception e) {
+        log.debug("Получен статус 409 Conflict {}", e.getMessage(), e);
+        return new ErrorResponse("CONFLICT", e.getMessage());
     }
 
     @ExceptionHandler

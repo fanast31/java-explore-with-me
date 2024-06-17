@@ -302,13 +302,13 @@ public class EventServiceImpl implements EventService {
                             .sorted((e1, e2) -> Long.compare(e2.getViews(), e1.getViews()))
                             .map(EventMapper::toEventShortDto)
                             .collect(Collectors.toList());
-
                     break;
-                default:
-                    pageable = PageRequest.of(from / size, size);
-                    eventsDto = EventMapper.toListShortDto(eventsRepository.findAll(spec, pageable));
             }
+        } else {
+            pageable = PageRequest.of(from / size, size);
+            eventsDto = EventMapper.toListShortDto(eventsRepository.findAll(spec, pageable));
         }
+
         if (eventsDto == null || eventsDto.isEmpty()) return new ArrayList<>();
 
         return eventsDto;

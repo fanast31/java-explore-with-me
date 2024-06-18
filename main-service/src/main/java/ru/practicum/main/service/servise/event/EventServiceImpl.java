@@ -334,8 +334,8 @@ public class EventServiceImpl implements EventService {
     private Long getEventViews(Event event) {
         if (event.getId() != null) {
             List<StatsDtoResponse> eventRequests = statsClient.getStatistics(
-                    LocalDateTime.now().minusYears(100),
-                    LocalDateTime.now().plusYears(100),
+                    event.getPublishedOn(),
+                    LocalDateTime.now(),
                     Arrays.asList("/events/" + event.getId()),
                     true);
 

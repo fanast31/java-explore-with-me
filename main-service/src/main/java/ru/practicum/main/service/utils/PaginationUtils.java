@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import ru.practicum.main.service.exceptions.BadRequestException;
 
 public class PaginationUtils {
+    public static final Sort SORT_CREATED_DESC = Sort.by(Sort.Direction.DESC, "created");
 
     public static Pageable createPageable(Integer from, Integer size) {
 

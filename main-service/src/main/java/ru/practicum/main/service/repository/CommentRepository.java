@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByEventId(long eventId, Pageable pageable);
+
     @Query("SELECT c FROM Comment AS c " +
             "WHERE LOWER(c.text) LIKE concat('%',:text,'%') " +
             "AND (c.event.id = :eventId)")

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
@@ -48,6 +48,7 @@ public class CommentServiceImpl implements CommentService{
         return CommentMapper.toCommentDto(commentRepository.save(comment));
 
     }
+
     @Override
     public CommentDto editComment(long userId, long commentId, NewCommentDto newCommentDto) {
 
@@ -71,6 +72,7 @@ public class CommentServiceImpl implements CommentService{
     public CommentDto getCommentById(long commentId) {
         return CommentMapper.toCommentDto(findCommentById(commentId));
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getCommentsByEventId(long eventId, int from, int size) {
@@ -79,6 +81,7 @@ public class CommentServiceImpl implements CommentService{
                 .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());
     }
+
     @Transactional(readOnly = true)
     @Override
     public List<CommentDto> getAllCommentsByParams(long eventId, String text, int from, int size) {
@@ -98,6 +101,7 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = findCommentById(commentId);
         commentRepository.delete(comment);
     }
+
     @Override
     public void deleteCommentByCreator(long userId, long commentId) {
         Comment comment = findCommentById(commentId);
@@ -113,10 +117,12 @@ public class CommentServiceImpl implements CommentService{
         return userRepository.findById(userId)
                 .orElseThrow(() -> new DataNotFoundException("User wasn't found"));
     }
+
     private Comment findCommentById(long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new DataNotFoundException("Comment wasn't found"));
     }
+
     private Event findEventById(long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new DataNotFoundException("Event wasn't found"));

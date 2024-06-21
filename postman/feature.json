@@ -13,34 +13,6 @@
 					"name": "deleteCommentByAdmin",
 					"event": [
 						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
-									"    pm.response.to.have.status(204);",
-									"});",
-									"",
-									"const commentId = pm.collectionVariables.get('commentId');",
-									"const foundedComment = pm.collectionVariables.get('foundedComment');",
-									"",
-									"pm.test(\"Комментарий должен быть найден до удаления\", function () {",
-									"    pm.expect(foundedComment.id).equal(commentId, 'Идентификтор comment должен совпадать с удаляемым');",
-									"});",
-									"",
-									"pm.sendRequest({",
-									"        url: pm.collectionVariables.get(\"baseUrl\") + \"/comments/searchById/\" + commentId,",
-									"        method: 'GET',",
-									"    }, (error, response) => {",
-									"        pm.test(\"Комментарий не должен быть найден после удаления\", function () {",
-									"            pm.expect(response.code).to.eql(404);",
-									"        });",
-									"    });"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
@@ -58,7 +30,7 @@
 									"        const foundedComment = await api.findComment(comment.id);\r",
 									"\r",
 									"        pm.collectionVariables.set(\"commentId\", comment.id);\r",
-									"        pm.collectionVariables.set(\"foundedComment\", foundedComment);\r",
+									"        pm.collectionVariables.set(\"foundedCommentId\", foundedComment.id);\r",
 									"\r",
 									"    } catch(err) {\r",
 									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
@@ -79,6 +51,34 @@
 									"    },  \r",
 									"    100 \r",
 									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"const commentId = pm.collectionVariables.get('commentId');",
+									"const foundedCommentId = pm.collectionVariables.get('foundedComment');",
+									"",
+									"pm.test(\"Комментарий должен быть найден до удаления\", function () {",
+									"    pm.expect(foundedCommentId).equal(commentId, 'Идентификтор comment должен совпадать с удаляемым');",
+									"});",
+									"",
+									"pm.sendRequest({",
+									"        url: pm.collectionVariables.get(\"baseUrl\") + \"/comments/searchById/\" + commentId,",
+									"        method: 'GET',",
+									"    }, (error, response) => {",
+									"        pm.test(\"Комментарий не должен быть найден после удаления\", function () {",
+									"            pm.expect(response.code).to.eql(404);",
+									"        });",
+									"    });"
 								],
 								"type": "text/javascript",
 								"packages": {}

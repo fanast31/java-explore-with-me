@@ -20,9 +20,10 @@ public class ControllerPublicComment {
 
     @GetMapping("/searchById/{commentId}")
     public ResponseEntity<CommentDto> getCommentById(@PathVariable Long commentId) {
-        log.info("ControllerPublicComment.getCommentById: commentId{}", commentId);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                commentService.getCommentById(commentId));
+        log.info("ControllerPublicComment.getCommentById REQUEST: commentId {}", commentId);
+        CommentDto commentDto = commentService.getCommentById(commentId);
+        log.info("ControllerPublicComment.getCommentById RESPONSE: commentDto {}", commentDto);
+        return ResponseEntity.status(HttpStatus.OK).body(commentDto);
     }
 
     @GetMapping("/searchByEvent/{eventId}")
